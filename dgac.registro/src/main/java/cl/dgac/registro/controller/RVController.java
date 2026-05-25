@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import cl.dgac.registro.dto.CreateRegistroVuelo;
 import cl.dgac.registro.dto.UpdateRegistroVuelo;
@@ -25,9 +26,11 @@ import jakarta.validation.Valid;
 public class RVController {
 
     private final RVService rVService;
+    private final WebClient planVueloWebClient;
 
-    public RVController(RVService rVService){
+    public RVController(RVService rVService, WebClient planVueloWebClient){
         this.rVService = rVService;
+        this.planVueloWebClient = planVueloWebClient;
     }
 
     //Obtener todos los registros de vuelo
