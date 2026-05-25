@@ -30,11 +30,15 @@ public class RVController {
         this.rVService = rVService;
     }
 
+    //Obtener todos los registros de vuelo
+
     @GetMapping
     public ResponseEntity <List<RegistroVuelo>> mostrarRV(){
         List<RegistroVuelo> listRV = rVService.listarRV();
         return ResponseEntity.ok(listRV);
     }
+
+    //Ingresar un nuevo registro de vuelo
 
     @PostMapping
     public ResponseEntity<RegistroVuelo> guardarRV(@Valid @RequestBody CreateRegistroVuelo request){
@@ -42,11 +46,15 @@ public class RVController {
         return ResponseEntity.status(HttpStatus.CREATED).body(rVuelo);
     }
 
+    //Actualizar registros de vuelo 
+
     @PutMapping
     public ResponseEntity<RegistroVuelo> actualizarRV(@Valid @RequestBody UpdateRegistroVuelo request){
         RegistroVuelo rVuelo = rVService.actualizarRV(RVMapper.toModel(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(rVuelo);
     }
+
+    //Eliminar registros de vuelo
 
     @DeleteMapping
     public ResponseEntity<String> eliminarRV(@PathVariable int idRV){
