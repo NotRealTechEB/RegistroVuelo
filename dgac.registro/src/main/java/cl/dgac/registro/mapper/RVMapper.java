@@ -7,10 +7,10 @@ import cl.dgac.registro.model.RegistroVuelo;
 public class RVMapper {
 
     public static RegistroVuelo toModel(CreateRegistroVuelo request){
-        return new RegistroVuelo(0, request.pscGPS(), request.fechaRV(), request.altMaxFinal(), request.tiTotal(),request.region());
+        return new RegistroVuelo(0, request.idPV(), null, request.altMaxFinal(), request.tiTotal(), request.vInc(), request.repInc(), null);
     }
 
     public static RegistroVuelo toModel(UpdateRegistroVuelo request){
-        return new RegistroVuelo(0, request.pscGPS(), request.fechaRV(), request.altMaxFinal(),request.tiTotal(), request.region());
+        return new RegistroVuelo(0, request.idPV(), null, request.altMaxFinal(), request.tiTotal(), request.vInc(), request.repInc(), null);
     }
 }

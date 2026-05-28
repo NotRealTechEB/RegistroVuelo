@@ -1,28 +1,26 @@
 package cl.dgac.registro.dto;
 
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NegativeOrZero;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public record CreateRegistroVuelo (
 
-    //Ubicación GPS
-    @NotNull(message="Debe existir un registro de ubicación GPS")
-    @Size(max = 30, message = "La ubicación GPS no puede superar los 30 caracteres") String pscGPS,
-
-    //Fecha de plan de vuelo
-    @NegativeOrZero(message = "Fecha del REGISTRO DE VUELO no puede ser negativa o igual a zero")
-    @Digits(integer = 6, fraction=0, message = "La fecha debe contener 6 digitos en formato DDMMAAAA") int fechaRV,
+    //ID Plan de vuelo
+    @NotNull(message="Debe ingresar el ID de Plan de vuelo") 
+    @Positive(message="El ID Plan de vuelo no puede ser negativo o cero")Integer idPV,
 
     //Altura máxima
-    @NegativeOrZero(message = "La altura máxima no puede ser negativa o cero") double altMaxFinal,
+    @Positive(message = "La altura máxima no puede ser negativa o cero.") Double altMaxFinal,
 
     //Tiempo estimado
-    @NegativeOrZero(message = "El tiempo estimado no puede ser negativo o cero") double tiTotal,
+    @Positive(message = "El tiempo estimado no puede ser negativo o cero.") Integer tiTotal,
 
-    //Region
-    @Size(max = 60, message = "La región no puede superar los 60 caracteres") String region
+    //Validador de incidente
+    @NotNull(message = "Debe registrar si hubo algún incidente.") Boolean vInc,
+
+    //Reporte de incidente
+    @Size(max=255, message="El reporte de incidentes no puede superar los 255 caracteres.") String repInc
 )
 {
 }

@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import cl.dgac.registro.dto.CreateRegistroVuelo;
+import cl.dgac.registro.dto.PlanVueloResponseDTO;
 import cl.dgac.registro.dto.UpdateRegistroVuelo;
 import cl.dgac.registro.mapper.RVMapper;
 import cl.dgac.registro.model.RegistroVuelo;
@@ -41,6 +43,15 @@ public class RVController {
         return ResponseEntity.ok(listRV);
     }
 
+    //Obtener datos de API Plan de vuelo 
+
+    @GetMapping("{idPlanVuelo}")
+    public ResponseEntity<PlanVueloResponseDTO> datosPlanVuelo(@RequestParam("idPlanVuelo") int idPlanVuelo){
+        PlanVueloResponseDTO datosPV = rVService.consultarPlanVuelo(idPlanVuelo);
+
+        return ResponseEntity.ok(datosPV);
+    }
+
     //Ingresar un nuevo registro de vuelo
 
     @PostMapping
@@ -49,11 +60,11 @@ public class RVController {
         return ResponseEntity.status(HttpStatus.CREATED).body(rVuelo);
     }
 
-    //Actualizar registros de vuelo 
+    //Actualizar registros de vuelo de forma parcial
 
     @PutMapping
     public ResponseEntity<RegistroVuelo> actualizarRV(@Valid @RequestBody UpdateRegistroVuelo request){
-        RegistroVuelo rVuelo = rVService.actualizarRV(RVMapper.toModel(request));
+        RegistroVuelo rVuelo = rVService.actualizarRVParcial(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(rVuelo);
     }
 

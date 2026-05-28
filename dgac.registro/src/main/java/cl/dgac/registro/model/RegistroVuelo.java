@@ -1,5 +1,7 @@
 package cl.dgac.registro.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,18 +24,27 @@ public class RegistroVuelo {
     @Column(name = "idRV")
     private int idRV;
 
-    @Column(name = "ubicacionGPS", nullable=false, length = 30)
-    private String pscGPS;
+    @Column(name = "idPlanVuelo", nullable=false)
+    private int idPlanVuelo;
 
     @Column(name = "fechaRV", nullable=false)
-    private int fechaRV;
+    private LocalDateTime fechaRV;
 
     @Column(name = "alturaMaxFinal", nullable=false)
     private double altMaxFinal;
 
-    @Column(name = "tiempoTotal", nullable=false)
-    private double tiTotal;
+    @Column(name = "tiempoTotalMinutos", nullable=false)
+    private int tiTotal;
 
-    @Column(name = "region", nullable=false, length=60)
-    private String region;
+    @Column(name = "validIncidente", nullable=false)
+    private boolean valIncidente;
+
+    @Column(name = "detallesIncidente", length=255)
+    private String detIncidente;
+
+    @Column(name = "tokenBitacora", nullable=false, length=50)
+    private String tokBitacora;
+
+    
+
 }
