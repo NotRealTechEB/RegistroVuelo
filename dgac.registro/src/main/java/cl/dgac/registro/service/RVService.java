@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import cl.dgac.registro.dto.PlanVueloResponseDTO;
+import cl.dgac.registro.dto.RegistroResponseDTO;
 import cl.dgac.registro.dto.UpdateRegistroVuelo;
 import cl.dgac.registro.model.RegistroVuelo;
 import cl.dgac.registro.repository.RVRepository;
@@ -22,6 +23,20 @@ public class RVService {
 
     public List<RegistroVuelo> listarRV(){
         return rVRepository.findAll();
+    }
+
+    //Método para mostrar Registro por ID (DTO)
+
+    public RegistroResponseDTO obtenerRegistroById(int idRV) {
+        RegistroVuelo registro = rVRepository.findById(idRV).orElseThrow(() -> new RuntimeException("Registro de vuelo no encontrado"));
+
+        RegistroResponseDTO dto = new RegistroResponseDTO();
+        dto.setIdRV(registro.getIdRV());
+        dto.setFeRV(registro.getFechaRV());
+        dto.setVInc(registro.isValIncidente());
+        dto.setDetInc(registro.getDetIncidente());
+
+        return dto;
     }
 
     //Método para guardar nuevos registros de vuelo

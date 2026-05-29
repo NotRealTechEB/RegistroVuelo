@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import cl.dgac.registro.dto.CreateRegistroVuelo;
 import cl.dgac.registro.dto.PlanVueloResponseDTO;
+import cl.dgac.registro.dto.RegistroResponseDTO;
 import cl.dgac.registro.dto.UpdateRegistroVuelo;
 import cl.dgac.registro.mapper.RVMapper;
 import cl.dgac.registro.model.RegistroVuelo;
@@ -43,9 +44,18 @@ public class RVController {
         return ResponseEntity.ok(listRV);
     }
 
+    //Obtener registro de vuelo por ID
+
+    @GetMapping("{id}")
+    public ResponseEntity<RegistroResponseDTO> registroByID(int idRV){
+        RegistroResponseDTO dto = rVService.obtenerRegistroById(idRV);
+        return ResponseEntity.ok(dto);
+    }
+
+
     //Obtener datos de API Plan de vuelo 
 
-    @GetMapping("{idPlanVuelo}")
+    @GetMapping("PlanVuelo/buscar")
     public ResponseEntity<PlanVueloResponseDTO> datosPlanVuelo(@RequestParam("idPlanVuelo") int idPlanVuelo){
         PlanVueloResponseDTO datosPV = rVService.consultarPlanVuelo(idPlanVuelo);
 
