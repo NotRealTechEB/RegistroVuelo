@@ -46,8 +46,8 @@ public class RVController {
 
     //Obtener registro de vuelo por ID
 
-    @GetMapping("{id}")
-    public ResponseEntity<RegistroResponseDTO> registroByID(int idRV){
+    @GetMapping("/id")
+    public ResponseEntity<RegistroResponseDTO> registroByID(@RequestParam("idRV") int idRV){
         RegistroResponseDTO dto = rVService.obtenerRegistroById(idRV);
         return ResponseEntity.ok(dto);
     }
@@ -55,7 +55,7 @@ public class RVController {
 
     //Obtener datos de API Plan de vuelo 
 
-    @GetMapping("PlanVuelo/buscar")
+    @GetMapping("PlanVuelo-buscar")
     public ResponseEntity<PlanVueloResponseDTO> datosPlanVuelo(@RequestParam("idPlanVuelo") int idPlanVuelo){
         PlanVueloResponseDTO datosPV = rVService.consultarPlanVuelo(idPlanVuelo);
 
@@ -72,7 +72,7 @@ public class RVController {
 
     //Actualizar registros de vuelo de forma parcial
 
-    @PutMapping
+    @PutMapping("/{idRV}")
     public ResponseEntity<RegistroVuelo> actualizarRV(@Valid @RequestBody UpdateRegistroVuelo request){
         RegistroVuelo rVuelo = rVService.actualizarRVParcial(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(rVuelo);
@@ -80,7 +80,7 @@ public class RVController {
 
     //Eliminar registros de vuelo
 
-    @DeleteMapping
+    @DeleteMapping("/{idRV}")
     public ResponseEntity<String> eliminarRV(@PathVariable int idRV){
         rVService.eliminarRV(idRV);
         return ResponseEntity.noContent().build();

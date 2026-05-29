@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import cl.dgac.registro.dto.PlanVueloResponseDTO;
 import cl.dgac.registro.dto.RegistroResponseDTO;
 import cl.dgac.registro.dto.UpdateRegistroVuelo;
+import cl.dgac.registro.exception.ResourceNotFoundException;
 import cl.dgac.registro.model.RegistroVuelo;
 import cl.dgac.registro.repository.RVRepository;
 
@@ -28,8 +29,7 @@ public class RVService {
     //Método para mostrar Registro por ID (DTO)
 
     public RegistroResponseDTO obtenerRegistroById(int idRV) {
-        RegistroVuelo registro = rVRepository.findById(idRV).orElseThrow(() -> new RuntimeException("Registro de vuelo no encontrado"));
-
+        RegistroVuelo registro = rVRepository.findById(idRV).orElseThrow(() -> new ResourceNotFoundException("Registro de vuelo no encontrado"));
         RegistroResponseDTO dto = new RegistroResponseDTO();
         dto.setIdRV(registro.getIdRV());
         dto.setFeRV(registro.getFechaRV());
@@ -80,7 +80,7 @@ public class RVService {
             return planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/dgac/PlanVuelo/buscar").queryParam("idPlanVuelo", idPlanVuelo).build())
                 .retrieve().bodyToMono(PlanVueloResponseDTO.class).block();
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo validar el Plan de Vuelo ID " + idPlanVuelo + ".");
+            throw new ResourceNotFoundException("No se pudo validar el Plan de Vuelo ID " + idPlanVuelo + ".");
         }
     }
     
