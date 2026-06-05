@@ -9,14 +9,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistroResponseDTO {
-    private int idRV;
-    private int idPV;
-    private LocalDateTime feRV;
+public class RegistroVueloDTO {
     private double altFinal;
     private int tiTotal;
-    private boolean vInc;
     private String detInc;
 
-    private PlanVueloResponseDTO planVuelo;
+    private String codigoVuelo;
+    private String numeroRegistro;
+    private LocalDateTime fechaPV;
+    private String psGPS;
+    private double altMax;
+    private String region;
 }

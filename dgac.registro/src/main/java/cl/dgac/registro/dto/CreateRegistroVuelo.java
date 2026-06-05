@@ -6,9 +6,9 @@ import jakarta.validation.constraints.Size;
 
 public record CreateRegistroVuelo (
 
-    //ID Plan de vuelo
-    @NotNull(message="Debe ingresar el ID de Plan de vuelo") 
-    @Positive(message="El ID Plan de vuelo no puede ser negativo o cero")Integer idPV,
+    //Codigo de vuelo
+    @NotNull(message="Debe ingresar el codigo de vuelo") 
+    @Size(max=12, message="El codigo de vuelo no puede ser mayor a 12 caracteres") String codVuelo,
 
     //Altura máxima
     @Positive(message = "La altura máxima no puede ser negativa o cero.") Double altMaxFinal,
@@ -16,11 +16,20 @@ public record CreateRegistroVuelo (
     //Tiempo estimado
     @Positive(message = "El tiempo estimado no puede ser negativo o cero.") Integer tiTotal,
 
-    //Validador de incidente
-    @NotNull(message = "Debe registrar si hubo algún incidente.") Boolean vInc,
-
     //Reporte de incidente
-    @Size(max=255, message="El reporte de incidentes no puede superar los 255 caracteres.") String repInc
+    @Size(max=255, message="El reporte de incidentes no puede superar los 255 caracteres.") String repInc,
+
+    String psGPS,
+    String fechaPV,
+
+    String numeroRegistro,
+
+    String region,
+    String rutEmpMandante,
+    
+    String tokBitacora
+
+
 )
 {
 }

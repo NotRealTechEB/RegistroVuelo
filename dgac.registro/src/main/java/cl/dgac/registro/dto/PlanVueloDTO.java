@@ -7,15 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class PlanVueloResponseDTO {
-    private int idPlanVuelo;
-    private int idPiloto;
-    private int idDrone;
+@NoArgsConstructor
+public class PlanVueloDTO {
+    
+    private String codigoVuelo;
+    private String rutEmpresaMandante;
+    private String numeroRegistro;
+    private LocalDateTime fechaPV;
     private String psGPS;
-    private LocalDateTime fechaPDV;
     private double altMax;
-    private int tiEst;
     private String region;
+    
 }

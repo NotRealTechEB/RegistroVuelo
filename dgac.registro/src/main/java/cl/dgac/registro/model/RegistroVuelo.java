@@ -24,27 +24,38 @@ public class RegistroVuelo {
     @Column(name = "idRV")
     private int idRV;
 
-    @Column(name = "idPlanVuelo", nullable=false)
-    private int idPlanVuelo;
+    @Column(name = "rutPiloto", nullable = false, length = 12)
+    private int rutPiloto;
 
-    @Column(name = "fechaRV", nullable=false)
-    private LocalDateTime fechaRV;
+    @Column(name = "numeroRegistro")
+    private String numeroRegistro;
 
-    @Column(name = "alturaMaxFinal", nullable=false)
-    private double altMaxFinal;
+    @Column(name="rutEmpresaMandante", length=15)
+    private String rutEmpMandante;
+
+    @Column(name = "codigoVuelo", nullable=false, length = 12)
+    private String codigoVuelo;
 
     @Column(name = "tiempoTotalMinutos", nullable=false)
-    private int tiTotal;
+    private int tiempoTotal;
 
-    @Column(name = "validIncidente", nullable=false)
-    private boolean valIncidente;
+    @Column(name = "ubicacionGPS", length = 30)
+    private String psGPS;
+
+    @Column(name = "fechaPV")
+    private LocalDateTime fechaPV;
+
+    @Column(name = "alturaMaxima")
+    private double altMax;
+
+    @Column(name = "region", length=18)
+    private String region;
 
     @Column(name = "detallesIncidente", length=255)
     private String detIncidente;
 
-    @Column(name = "tokenBitacora", nullable=false, length=50)
+    @Column(name = "tokenBitacora", length=50)
     private String tokBitacora;
 
-    
 
 }

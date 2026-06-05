@@ -3,13 +3,10 @@ package cl.dgac.registro.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import cl.dgac.registro.dto.PlanVueloResponseDTO;
-import cl.dgac.registro.dto.RegistroResponseDTO;
-import cl.dgac.registro.dto.UpdateRegistroVuelo;
+import cl.dgac.registro.dto.PlanVueloDTO;
 import cl.dgac.registro.exception.ResourceNotFoundException;
 import cl.dgac.registro.model.RegistroVuelo;
 import cl.dgac.registro.repository.RVRepository;
@@ -20,50 +17,12 @@ public class RVService {
     private RVRepository rVRepository;
     private WebClient planVueloApiWebClient;
 
+    //-------------------------------Metodos de administracion-------------------------------//
+
     //Método para listar todos los registros de vuelo
 
     public List<RegistroVuelo> listarRV(){
         return rVRepository.findAll();
-    }
-
-    //Método para mostrar Registro por ID (DTO)
-
-    public RegistroResponseDTO obtenerRegistroById(int idRV) {
-        RegistroVuelo registro = rVRepository.findById(idRV).orElseThrow(() -> new ResourceNotFoundException("Registro de vuelo no encontrado"));
-        RegistroResponseDTO dto = new RegistroResponseDTO();
-        dto.setIdRV(registro.getIdRV());
-        dto.setFeRV(registro.getFechaRV());
-        dto.setVInc(registro.isValIncidente());
-        dto.setDetInc(registro.getDetIncidente());
-
-        return dto;
-    }
-
-    //Método para guardar nuevos registros de vuelo
-
-    public RegistroVuelo guardarRV(RegistroVuelo rV){
-        return rVRepository.save(rV);
-    }
-
-    //Método para actualizar registros sin afectar otros campos
-
-    public RegistroVuelo actualizarRVParcial(UpdateRegistroVuelo request) {
-    RegistroVuelo rVExistente = rVRepository.findById(request.idRV()).orElseThrow(() 
-        -> new RuntimeException("ID "+ request.idRV()+ " no corresponde a REGISTRO DE VUELO"));
-    
-        if (request.altMaxFinal() != null) {
-            rVExistente.setAltMaxFinal(request.altMaxFinal());
-        }
-        
-        if (request.tiTotal() != null) {
-            rVExistente.setTiTotal(request.tiTotal());
-        }
-        
-        if (request.repInc() != null) {
-            rVExistente.setDetIncidente(request.repInc());
-        }
-
-        return rVRepository.save(rVExistente);
     }
 
     //Método para eliminar registros de vuelo
@@ -73,15 +32,40 @@ public class RVService {
         return "El registro de vuelo ha sido eliminado";
     }
 
-    //Comunicación a API Plan de vuelo
-    @Qualifier("planVueloApiWebClient")
-    public PlanVueloResponseDTO consultarPlanVuelo(int idPlanVuelo) {
+    //-------------------------------Metodos HU - Piloto-------------------------------//
+
+    //Crear nuevos registros de vuelo
+    public PlanVueloDTO consultarPlanVuelo(String codVuelo) {
         try {
-            return planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/dgac/PlanVuelo/buscar").queryParam("idPlanVuelo", idPlanVuelo).build())
-                .retrieve().bodyToMono(PlanVueloResponseDTO.class).block();
+            return planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codVuelo).build())
+                .retrieve().bodyToMono(PlanVueloDTO.class).block();
         } catch (Exception ex) {
-            throw new ResourceNotFoundException("No se pudo validar el Plan de Vuelo ID " + idPlanVuelo + ".");
+            throw new ResourceNotFoundException("No se encontraron planes de vuelo con el codigo: " + codVuelo);
         }
     }
-    
+
+    public RegistroVuelo guardarRegistro(RegistroVuelo nuevoRegistro) {
+
+    String codigo = nuevoRegistro.getCodigoVuelo();
+    PlanVueloDTO plan = consultarPlanVuelo(codigo);
+    nuevoRegistro.setRutPiloto(nuevoRegistro.getRutPiloto());
+    nuevoRegistro.setRutEmpMandante(plan.getRutEmpresaMandante());
+    nuevoRegistro.setPsGPS(plan.getPsGPS());
+    nuevoRegistro.setFechaPV(plan.getFechaPV());
+    nuevoRegistro.setAltMax(plan.getAltMax());
+    nuevoRegistro.setNumeroRegistro(plan.getNumeroRegistro());
+
+    nuevoRegistro.setTiempoTotal(nuevoRegistro.getTiempoTotal());
+    nuevoRegistro.setDetIncidente(nuevoRegistro.getDetIncidente());
+    nuevoRegistro.setRegion(plan.getRegion());
+    nuevoRegistro.setTokBitacora(java.util.UUID.randomUUID().toString());
+    return rVRepository.save(nuevoRegistro);
 }
+
+    //Visualizar registros de vuelo según el rut del piloto
+    public List<RegistroVuelo> obtenerRegistrosPorRut(String rutPiloto) {
+    return rVRepository.findByRutPiloto(rutPiloto);
+}
+}
+    
+
