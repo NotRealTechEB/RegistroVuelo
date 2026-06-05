@@ -50,7 +50,7 @@ public class RVController {
     //-------------------------------Metodos HU - Piloto-------------------------------//
 
     //Obtener registros por rut de piloto
-    @GetMapping("/piloto/{rutPiloto}")
+    @GetMapping("{rutPiloto}")
     public ResponseEntity<List<RegistroVuelo>> buscarPorRut(@RequestParam("rutPiloto") String rutPiloto) {
         List<RegistroVuelo> lista = rVService.obtenerRegistrosPorRut(rutPiloto);
         return ResponseEntity.ok(lista);
@@ -58,8 +58,8 @@ public class RVController {
 
     //Guardar registros de vuelo
 
-    @PostMapping("/guardarRegistro")
-    public ResponseEntity<RegistroVuelo> crearRegistro(@RequestBody RegistroVuelo nuevoRegistro) {
+    @PostMapping("{codVuelo}")
+    public ResponseEntity<RegistroVuelo> crearRegistro(@RequestParam("codVuelo") String codVuelo, @RequestBody RegistroVuelo nuevoRegistro) {
         RegistroVuelo registroGuardado = rVService.guardarRegistro(nuevoRegistro);
         return ResponseEntity.status(HttpStatus.CREATED).body(registroGuardado);
     }

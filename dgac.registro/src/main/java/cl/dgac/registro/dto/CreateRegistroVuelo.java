@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 
 public record CreateRegistroVuelo (
 
+    //RUT PILOTO
+    @NotNull(message="Debe ingresar el rut del piloto") 
+    @Size(min=9, max=10, message = "El rut debe contener entre 9 y 10 caracteres")String rutPiloto,
+
     //Codigo de vuelo
     @NotNull(message="Debe ingresar el codigo de vuelo") 
     @Size(max=12, message="El codigo de vuelo no puede ser mayor a 12 caracteres") String codVuelo,
