@@ -9,6 +9,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
     @Bean(name="planVueloApiWebClient")
     public WebClient planVueloApiWebClient(){
-        return WebClient.builder().baseUrl("http://localhost:8083").build();
+        return WebClient.builder().baseUrl("https://planvuelo.onrender.com").build();
     }
 }
