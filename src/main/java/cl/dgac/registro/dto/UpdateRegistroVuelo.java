@@ -6,23 +6,22 @@ import jakarta.validation.constraints.Size;
 
 public record UpdateRegistroVuelo (
 
-    //RUT PILOTO
-    @NotNull(message = "El RUT del piloto es obligatorio")
-    @Size(min = 8, max = 12, message = "El RUT debe tener entre 8 y 12 caracteres")String rutPiloto,
-
     //Codigo de vuelo
     @NotNull(message="Debe ingresar el codigo de vuelo") 
     @Size(max=12, message="El codigo de vuelo no puede ser mayor a 12 caracteres") String codVuelo,
 
-    //Altura máxima
-    @Positive(message = "La altura máxima no puede ser negativa o cero.") Double altMaxFinal,
-
-    //Tiempo estimado
+    //Tiempo total
+    @NotNull(message="Debe ingresar el tiempo total del vuelo") 
     @Positive(message = "El tiempo estimado no puede ser negativo o cero.") Integer tiTotal,
+
+    //Altura final
+    @NotNull(message="Debe ingresar la altura alcanzada del vuelo") 
+    @Positive(message = "El tiempo estimado no puede ser negativo o cero.") Integer altFinal,
 
     //Reporte de incidente
     @Size(max=255, message="El reporte de incidentes no puede superar los 255 caracteres.") String repInc,
 
+    //Creacion automatica token
     String tokBitacora
 
 )

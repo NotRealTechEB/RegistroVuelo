@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import cl.dgac.registro.dto.RegistroVueloDTO;
 import cl.dgac.registro.model.RegistroVuelo;
 import cl.dgac.registro.service.RVService;
 
@@ -51,8 +52,8 @@ public class RVController {
 
     //Obtener registros por rut de piloto
     @GetMapping("{rutPiloto}")
-    public ResponseEntity<List<RegistroVuelo>> buscarPorRut(@RequestParam("rutPiloto") String rutPiloto) {
-        List<RegistroVuelo> lista = rVService.obtenerRegistrosPorRut(rutPiloto);
+    public ResponseEntity<List<RegistroVueloDTO>> buscarPorRut(@RequestParam("rutPiloto") String rutPiloto) {
+        List<RegistroVueloDTO> lista = rVService.obtenerRegistrosPorRut(rutPiloto);
         return ResponseEntity.ok(lista);
     }
 

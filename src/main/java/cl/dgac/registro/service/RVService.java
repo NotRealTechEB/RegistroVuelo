@@ -1,5 +1,6 @@
 package cl.dgac.registro.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import cl.dgac.registro.dto.PlanVueloDTO;
+import cl.dgac.registro.dto.RegistroVueloDTO;
 import cl.dgac.registro.exception.ResourceNotFoundException;
 import cl.dgac.registro.model.RegistroVuelo;
 import cl.dgac.registro.repository.RVRepository;
@@ -35,37 +37,51 @@ public class RVService {
     //-------------------------------Metodos HU - Piloto-------------------------------//
 
     //Crear nuevos registros de vuelo
-    public PlanVueloDTO consultarPlanVuelo(String codVuelo) {
-        try {
-            return planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codVuelo).build())
-                .retrieve().bodyToMono(PlanVueloDTO.class).block();
-        } catch (Exception ex) {
-            throw new ResourceNotFoundException("No se encontraron planes de vuelo con el codigo: " + codVuelo);
-        }
-    }
-
     public RegistroVuelo guardarRegistro(RegistroVuelo nuevoRegistro) {
-
     String codigo = nuevoRegistro.getCodigoVuelo();
-    PlanVueloDTO plan = consultarPlanVuelo(codigo);
-    nuevoRegistro.setRutPiloto(nuevoRegistro.getRutPiloto());
-    nuevoRegistro.setRutEmpMandante(plan.getRutEmpresaMandante());
-    nuevoRegistro.setPsGPS(plan.getPsGPS());
-    nuevoRegistro.setFechaPV(plan.getFechaPV());
-    nuevoRegistro.setAltMax(plan.getAltMax());
-    nuevoRegistro.setNumeroRegistro(plan.getNumeroRegistro());
+    
+    try {
+        planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codigo).build())
+            .retrieve().toBodilessEntity().block();    
+    } catch (Exception ex) {
+        throw new ResourceNotFoundException("No se encuentran planes de vuelo para el codigo de vuelo:" + codigo);
+    }
 
     nuevoRegistro.setTiempoTotal(nuevoRegistro.getTiempoTotal());
     nuevoRegistro.setDetIncidente(nuevoRegistro.getDetIncidente());
-    nuevoRegistro.setRegion(plan.getRegion());
     nuevoRegistro.setTokBitacora(java.util.UUID.randomUUID().toString());
+    
     return rVRepository.save(nuevoRegistro);
-}
+    }
 
     //Visualizar registros de vuelo según el rut del piloto
-    public List<RegistroVuelo> obtenerRegistrosPorRut(String rutPiloto) {
-    return rVRepository.findByRutPiloto(rutPiloto);
-}
-}
-    
+    public List<RegistroVueloDTO> obtenerRegistrosPorRut(String rutPiloto) {
 
+        List<RegistroVuelo> registrosBD = rVRepository.findByRutPiloto(rutPiloto);
+        List<RegistroVueloDTO> listaResultados = new ArrayList<>();
+
+        for (RegistroVuelo registro : registrosBD) {
+            
+            RegistroVueloDTO rvDTO = new RegistroVueloDTO();
+            rvDTO.setAltFinal(registro.getAltFinal()); 
+            rvDTO.setTiTotal(registro.getTiempoTotal());
+            rvDTO.setDetInc(registro.getDetIncidente());
+
+            try {
+                String codigo = registro.getCodigoVuelo(); 
+                PlanVueloDTO datosDelPlanReal = planVueloApiWebClient.get()
+                    .uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codigo).build())
+                    .retrieve()
+                    .bodyToMono(PlanVueloDTO.class)
+                    .block();                                             
+                rvDTO.setPlanvuelo(datosDelPlanReal);
+                
+            } catch (Exception ex) {
+                rvDTO.setPlanvuelo(null);
+            }
+            listaResultados.add(rvDTO); 
+        } 
+        return listaResultados; 
+    } 
+
+}
