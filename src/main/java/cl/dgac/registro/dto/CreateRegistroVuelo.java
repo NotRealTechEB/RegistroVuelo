@@ -10,6 +10,10 @@ public record CreateRegistroVuelo (
     @NotNull(message="Debe ingresar el codigo de vuelo") 
     @Size(max=12, message="El codigo de vuelo no puede ser mayor a 12 caracteres") String codVuelo,
 
+    //Rut Piloto
+    @NotNull(message="Debe ingresar el rut del piloto") 
+    @Size(max=12, message="El codigo de vuelo no puede ser mayor a 12 caracteres") String rutPiloto,
+
     //Tiempo total
     @NotNull(message="Debe ingresar el tiempo total del vuelo") 
     @Positive(message = "El tiempo estimado no puede ser negativo o cero.") Integer tiTotal,

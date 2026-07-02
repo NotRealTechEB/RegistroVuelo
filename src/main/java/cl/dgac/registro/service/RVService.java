@@ -69,12 +69,10 @@ public class RVService {
 
             try {
                 String codigo = registro.getCodigoVuelo(); 
-                PlanVueloDTO datosDelPlanReal = planVueloApiWebClient.get()
-                    .uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codigo).build())
-                    .retrieve()
-                    .bodyToMono(PlanVueloDTO.class)
-                    .block();                                             
-                rvDTO.setPlanvuelo(datosDelPlanReal);
+                PlanVueloDTO datosPV = planVueloApiWebClient.get()
+                    .uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codigo).build()).retrieve()
+                    .bodyToMono(PlanVueloDTO.class).block();                                             
+                rvDTO.setPlanvuelo(datosPV);
                 
             } catch (Exception ex) {
                 rvDTO.setPlanvuelo(null);

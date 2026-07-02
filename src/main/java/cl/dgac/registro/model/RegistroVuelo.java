@@ -25,6 +25,9 @@ public class RegistroVuelo {
     @Column(name = "codigoVuelo", nullable=false, length = 12)
     private String codigoVuelo;
 
+    @Column(name = "rutPiloto", nullable=false, length = 12)
+    private String rutPiloto;
+
     @Column(name = "tiempoTotalMinutos", nullable=false)
     private int tiempoTotal;
 
