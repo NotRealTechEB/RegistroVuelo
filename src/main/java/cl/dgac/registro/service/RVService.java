@@ -40,8 +40,7 @@ public class RVService {
     public RegistroVuelo guardarRegistro(RegistroVuelo nuevoRegistro) {
     String codigo = nuevoRegistro.getCodigoVuelo();
     try {
-        planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codigoVuelo", codigo).build())
-            .retrieve().toBodilessEntity().block();    
+        planVueloApiWebClient.get().uri("/api/v1/planvuelo/integrar?codVuelo=" + codigo).retrieve().toBodilessEntity().block();
     } catch (Exception ex) {
         throw new ResourceNotFoundException("No se encuentran planes de vuelo para el codigo de vuelo:" + codigo);
     }
@@ -70,7 +69,7 @@ public class RVService {
             try {
                 String codigo = registro.getCodigoVuelo(); 
                 PlanVueloDTO datosPV = planVueloApiWebClient.get()
-                    .uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codigoVuelo", codigo).build()).retrieve()
+                    .uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codigo).build()).retrieve()
                     .bodyToMono(PlanVueloDTO.class).block();                                             
                 rvDTO.setPlanvuelo(datosPV);
                 
