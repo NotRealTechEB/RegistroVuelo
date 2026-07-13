@@ -40,7 +40,7 @@ public class RVService {
     public RegistroVuelo guardarRegistro(RegistroVuelo nuevoRegistro) {
     String codigo = nuevoRegistro.getCodigoVuelo();
     try {
-        planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codigo).build())
+        planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codigoVuelo", codigo).build())
             .retrieve().toBodilessEntity().block();    
     } catch (Exception ex) {
         throw new ResourceNotFoundException("No se encuentran planes de vuelo para el codigo de vuelo:" + codigo);
