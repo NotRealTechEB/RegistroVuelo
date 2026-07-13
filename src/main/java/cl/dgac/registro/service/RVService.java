@@ -39,7 +39,6 @@ public class RVService {
     //Crear nuevos registros de vuelo
     public RegistroVuelo guardarRegistro(RegistroVuelo nuevoRegistro) {
     String codigo = nuevoRegistro.getCodigoVuelo();
-    
     try {
         planVueloApiWebClient.get().uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codigo).build())
             .retrieve().toBodilessEntity().block();    
@@ -53,7 +52,7 @@ public class RVService {
     
     return rVRepository.save(nuevoRegistro);
     }
-    
+
 
     //Visualizar registros de vuelo según el rut del piloto
     public List<RegistroVueloDTO> obtenerRegistrosPorRut(String rutPiloto) {
@@ -71,7 +70,7 @@ public class RVService {
             try {
                 String codigo = registro.getCodigoVuelo(); 
                 PlanVueloDTO datosPV = planVueloApiWebClient.get()
-                    .uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codVuelo", codigo).build()).retrieve()
+                    .uri(uriBuilder -> uriBuilder.path("/api/v1/planvuelo/integrar").queryParam("codigoVuelo", codigo).build()).retrieve()
                     .bodyToMono(PlanVueloDTO.class).block();                                             
                 rvDTO.setPlanvuelo(datosPV);
                 
