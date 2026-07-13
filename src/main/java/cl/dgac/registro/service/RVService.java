@@ -40,7 +40,8 @@ public class RVService {
     public RegistroVuelo guardarRegistro(RegistroVuelo nuevoRegistro) {
     String codigo = nuevoRegistro.getCodigoVuelo();
     try {
-        planVueloApiWebClient.get().uri("/api/v1/planvuelo/integrar?codVuelo=" + codigo).retrieve().toBodilessEntity().block();
+        org.springframework.web.reactive.function.client.WebClient.create().get().uri("https://planvuelo.onrender.com/api/v1/planvuelo/integrar?codVuelo=" + codigo)
+    .retrieve().toBodilessEntity().block();
     } catch (Exception ex) {
         throw new ResourceNotFoundException("No se encuentran planes de vuelo para el codigo de vuelo:" + codigo);
     }
