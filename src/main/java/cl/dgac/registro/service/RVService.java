@@ -53,6 +53,7 @@ public class RVService {
     
     return rVRepository.save(nuevoRegistro);
     }
+    
 
     //Visualizar registros de vuelo según el rut del piloto
     public List<RegistroVueloDTO> obtenerRegistrosPorRut(String rutPiloto) {

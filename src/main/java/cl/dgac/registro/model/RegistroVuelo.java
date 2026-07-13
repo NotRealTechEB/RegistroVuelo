@@ -20,7 +20,7 @@ public class RegistroVuelo {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "idRV")
-    private int idRV;
+    private Integer idRV;
 
     @Column(name = "codigoVuelo", nullable=false, length = 12)
     private String codigoVuelo;
