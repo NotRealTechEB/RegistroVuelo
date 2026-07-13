@@ -126,7 +126,7 @@ public class RVController {
             )
         ) 
     )
-    @PostMapping("{codVuelo}")
+    @PostMapping
     public ResponseEntity<RegistroVuelo> crearRegistro(@RequestParam("codVuelo") String codVuelo, @RequestBody RegistroVuelo nuevoRegistro) {
         RegistroVuelo registroGuardado = rVService.guardarRegistro(nuevoRegistro);
         return ResponseEntity.status(HttpStatus.CREATED).body(registroGuardado);
